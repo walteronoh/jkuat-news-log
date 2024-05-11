@@ -2,32 +2,44 @@ import { Masonry } from "@mui/lab";
 import { Box, Grid, Card, CardContent, CardMedia, CardActions, Button, Typography, Chip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchNewsFromLocalStorage, saveNewsToLocalStorage } from "../api/api";
+import { fetchNews, fetchNewsFromLocalStorage, saveNewsToLocalStorage } from "../api/api";
 
 function ReadNews() {
     const navigate = useNavigate();
     const params = useParams();
-    const [previousNews, setPreviousNews] = useState([]);
+    const [savedNews, setSavedNews] = useState([]);
+    const [news, setNews] = useState({});
 
     useEffect(() => {
-        console.log(params.id);
+        // Get news
+        handleFetchPageNews();
         // Save to local storage
         saveNewsToLocalStorage(params.id);
         // Get saved news
-        setPreviousNews(fetchNewsFromLocalStorage());
+        handleFetchSavedNews();
     }, []);
-    
+
+    const handleFetchPageNews = () => {
+        fetchNews().then((resp) => {
+            setNews(resp.find((v) => v.id === params.id));
+        });
+    }
 
     const handleFetchSavedNews = () => {
-        let prevNews = fetchNewsFromLocalStorage();
-        
+        let sNews = fetchNewsFromLocalStorage();
+        if (sNews) {
+            console.log(sNews);
+            fetchNews().then((resp) => {
+                setSavedNews(resp.filter((value) => sNews.map((v) => v.id).includes(value.id)));
+            });
+        }
     }
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} md={9}>
                 <Box sx={{ width: "100%" }}>
-                    <Chip label="Monday 12, June, 2024" />
+                    <Chip label={news.posting_date} />
                     <Card>
                         <CardMedia
                             sx={{ height: 500 }}
@@ -36,17 +48,14 @@ function ReadNews() {
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                The News Header
+                                {news.news_header}
                             </Typography>
                             <Typography variant="body1" color="text.secondary">
-                                Lizards are a widespread group of squamate reptiles, with over 6,000
-                                species, ranging across all continents except Antarctica
-                                Lizards are a widespread group of squamate reptiles, with over 6,000
-                                species, ranging across all continents except Antarctica
-                                Lizards are a widespread group of squamate reptiles, with over 6,000
-                                species, ranging across all continents except Antarctica
-                                Lizards are a widespread group of squamate reptiles, with over 6,000
-                                species, ranging across all continents except Antarctica
+                                {
+                                    news.news_content ? news.news_content.split('\n').map((paragraph, index) => (
+                                        <p key={index}>{paragraph}</p>
+                                    )) : ''
+                                }
                             </Typography>
                         </CardContent>
                     </Card>
@@ -59,19 +68,19 @@ function ReadNews() {
                     </Typography>
                     <Masonry columns={1}>
                         {
-                            [1, 2, 3, 4, 5].map((v, i) =>
+                            savedNews.map((v, i) =>
                                 <Card key={i}>
                                     <CardContent>
                                         <Typography gutterBottom variant="h6" component="div">
-                                            The News header ....
+                                            {v.news_header}
                                         </Typography>
                                         <Typography variant="body1" color="text.secondary">
-                                            The News content ....
+                                            {v.news_cut}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
                                         <Button size="small" onClick={() => {
-                                            navigate("/read-news");
+                                            navigate(`/read-news/${v.id}`);
                                         }}>Read More</Button>
                                     </CardActions>
                                 </Card>
