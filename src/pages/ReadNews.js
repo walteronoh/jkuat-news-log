@@ -41,11 +41,11 @@ function ReadNews() {
                 <Box sx={{ width: "100%" }}>
                     <Chip label={news.posting_date} />
                     <Card>
-                        <CardMedia
+                        {/* <CardMedia
                             sx={{ height: 500 }}
                             image="/images/cougars.jpg"
                             title="Cougars"
-                        />
+                        /> */}
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 {news.news_header}

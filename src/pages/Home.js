@@ -1,42 +1,63 @@
-import { Card, CardContent, Typography, CardActions, Button, CardMedia, Box } from "@mui/material";
+import { Card, CardContent, Typography, CardActions, Button, CardMedia, Box, Avatar } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
 import { useNavigate } from "react-router-dom";
 import { fetchNews } from "../api/api";
 import { useEffect, useState } from "react";
+import moment from "moment";
 
 function Home() {
     const navigate = useNavigate();
     const [news, setNews] = useState([]);
+    const [randomNews, setRandomNews] = useState({ news_header: "", news_cut: "", news_id: "" });
+    const [dateTime, setDateTime] = useState("");
 
     useEffect(() => {
         handleFetchNews();
+        handleGetDateTime();
     }, []);
 
     const handleFetchNews = () => {
         fetchNews().then((resp) => {
             setNews(resp);
+            // Set Random News
+            setRandomNews(resp[Math.floor(Math.random() * resp.length)]);
         })
     };
 
+    const handleGetDateTime = () => {
+        setDateTime(moment().format("DD, MMM, yyyy"));
+    }
+
     return (<>
-        <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', width: '100%' }}>
+        <Box sx={{ height: '80vh', width: '100%', display: 'flex' }}>
             <Box>
-                <Typography gutterBottom variant="h5" component="div">
-                    Lizard
-                </Typography>
+                <Avatar
+                    alt="JKUAT Logo"
+                    src="/jkuat-logo.png"
+                    sx={{ width: 35, height: 35 }}
+                />
                 <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
+                    {dateTime}
                 </Typography>
-                <Button size="small" onClick={() => {
-                    navigate("/read-news");
-                }}>Read More</Button>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {randomNews.news_header}
+                    </Typography>
+                    <Typography sx={{ width: '50%' }} variant="body2" color="text.secondary">
+                        {randomNews.news_cut}
+                    </Typography>
+                    <Button size="small" onClick={() => {
+                        navigate(`/read-news/${randomNews.id}`);
+                    }}>Read More</Button>
+                </Box>
             </Box>
         </Box>
         <Masonry columns={{ xs: 1, sm: 2, md: 4 }} spacing={2}>
             {news.map((v, i) => <Card key={i}>
                 <CardMedia
-                    sx={{ height: 200 }}
+                    // sx={{ height: 200 }}
                     image="/images/cougars.jpg"
                     title="Cougars"
                 />
