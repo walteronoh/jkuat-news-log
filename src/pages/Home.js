@@ -29,17 +29,17 @@ function Home() {
     }
 
     return (<>
-        <Box sx={{ height: '80vh', width: '100%', display: 'flex' }}>
-            <Box>
-                <Avatar
-                    alt="JKUAT Logo"
-                    src="/jkuat-logo.png"
-                    sx={{ width: 35, height: 35 }}
-                />
-                <Typography variant="body2" color="text.secondary">
-                    {dateTime}
-                </Typography>
-            </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: "30px" }}>
+            <Avatar
+                alt="JKUAT Logo"
+                src="/jkuat-logo.png"
+                sx={{ width: 35, height: 35 }}
+            />
+            <Typography variant="body2" color="text.secondary">
+                {dateTime}
+            </Typography>
+        </Box>
+        <Box sx={{ height: '80vh', display: 'flex', padding: "20px" }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Box>
                     <Typography gutterBottom variant="h5" component="div">
@@ -56,11 +56,11 @@ function Home() {
         </Box>
         <Masonry columns={{ xs: 1, sm: 2, md: 4 }} spacing={2}>
             {news.map((v, i) => <Card key={i}>
-                <CardMedia
-                    // sx={{ height: 200 }}
+                {/* <CardMedia
+                    sx={{ height: 200 }}
                     image="/images/cougars.jpg"
                     title="Cougars"
-                />
+                /> */}
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {v.news_header}
