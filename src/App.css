@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.aside-box{
+  width: 300px !important;
+  height:40vh !important;
+  background-color: #61dafb;
+  overflow: scroll;
+}
+.page{
+  display:flex;
+  flex-direction: row;
+  gap: 10px;
+}

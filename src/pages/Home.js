@@ -4,9 +4,10 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchNews } from "../api/api";
+import AsideTitle from '../components/AsideTitle';
 
 function Home() {
-    const navigate = useNavigate(); c
+    const navigate = useNavigate(); 
     const [news, setNews] = useState([]);
     const [randomNews, setRandomNews] = useState({ news_header: "", news_cut: "", news_id: "" });
     const [dateTime, setDateTime] = useState("");
@@ -30,10 +31,13 @@ function Home() {
 
     return (<>
     <div className="page">
-        <div className="aside-box"></div>
+        <div className="aside-box">
+            {<AsideTitle/>}
+        </div>
         <div className="content">
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: "30px" }}>
+            {/* <AsideTitle /> */}
             <Avatar
                 alt="JKUAT Logo"
                 src="/jkuat-logo.png"
