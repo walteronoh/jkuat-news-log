@@ -1,12 +1,13 @@
-import { Card, CardContent, Typography, CardActions, Button, CardMedia, Box, Avatar } from "@mui/material";
 import Masonry from '@mui/lab/Masonry';
+import { Avatar, Box, Button, Card, CardActions, CardContent, Typography } from "@mui/material";
+import moment from "moment";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchNews } from "../api/api";
-import { useEffect, useState } from "react";
-import moment from "moment";
+import AsideTitle from '../components/AsideTitle';
 
 function Home() {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
     const [news, setNews] = useState([]);
     const [randomNews, setRandomNews] = useState({ news_header: "", news_cut: "", news_id: "" });
     const [dateTime, setDateTime] = useState("");
@@ -19,7 +20,7 @@ function Home() {
     const handleFetchNews = () => {
         fetchNews().then((resp) => {
             setNews(resp);
-            // Set Random News
+            // Set Random Newsp0
             setRandomNews(resp[Math.floor(Math.random() * resp.length)]);
         })
     };
@@ -29,7 +30,14 @@ function Home() {
     }
 
     return (<>
+    <div className="page">
+        <div className="aside-box">
+            {<AsideTitle/>}
+        </div>
+        <div className="content">
+
         <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: "30px" }}>
+            {/* <AsideTitle /> */}
             <Avatar
                 alt="JKUAT Logo"
                 src="/jkuat-logo.png"
@@ -76,6 +84,8 @@ function Home() {
                 </CardActions>
             </Card>)}
         </Masonry>
+        </div>
+        </div>
     </>);
 }
 
